@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_TOKEN": "ghp_exampleexampleexampleexampleexampl0" }
+    },
+    "postgres-ledger": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "url": "postgres://novapay@ledger.novapay.example:5432/ledger"
+    },
+    "stripe": {
+      "command": "npx",
+      "args": ["-y", "@novapay/mcp-stripe"],
+      "url": "https://mcp.stripe.novapay.example"
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/data/statements"]
+    }
+  }
+}

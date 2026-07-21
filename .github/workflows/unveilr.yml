@@ -1,0 +1,32 @@
+# Unveilr Guard — Monitor Mode on every PR/push.
+# Start in observe (never fails the build). Flip mode to enforce when ready.
+#
+# Optional upload to the console:
+#   Settings → Secrets → Actions → UNVEILR_API, UNVEILR_TOKEN
+# Mint the token in Unveilr: Settings → API Tokens.
+name: unveilr
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  security-events: write   # SARIF → GitHub code scanning (when available)
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unveilr AI-SDLC scan
+        uses: unveilr/scan-action@v1
+        with:
+          mode: observe
+          fail-on: high
+          # Set upload: "true" and configure secrets when the console is available.
+          upload: ${{ secrets.UNVEILR_TOKEN != '' && 'true' || 'false' }}
+          api: ${{ secrets.UNVEILR_API }}
+          token: ${{ secrets.UNVEILR_TOKEN }}

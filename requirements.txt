@@ -1,0 +1,7 @@
+flask==3.0.0
+reqests==2.31.0
+crewai==0.28.0
+langchain==0.1.0
+langchain-openai==0.0.5
+boto3==1.34.0
+novapay-ai-riskkit==0.0.1

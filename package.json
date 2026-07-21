@@ -1,0 +1,11 @@
+{
+  "name": "novapay-dashboard",
+  "version": "1.4.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lodahs": "^4.17.21",
+    "axios": "^1.6.0"
+  }
+}

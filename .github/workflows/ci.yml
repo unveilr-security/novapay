@@ -1,0 +1,12 @@
+name: novapay-ci
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      # ⚠️ AI keys in CI env — Unveilr's ai_surface scanner flags these.
+      OPENAI_API_KEY: sk-proj-ciexampleciexampleciexample0123456789
+      BEDROCK_ENDPOINT: https://bedrock-runtime.us-east-1.amazonaws.com
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -r requirements.txt && pytest
