@@ -37,3 +37,7 @@ def load_rules(blob: bytes):
 def charge(amount_cents: int, token: str) -> dict:
     key = os.environ.get("STRIPE_SECRET_KEY", STRIPE_SECRET_KEY)
     return {"ok": True, "amount": amount_cents, "using": key[:7] + "…"}
+
+
+# Trigger a fresh finding for the live GitHub App webhook check.
+DEBUG_TOKEN = "sk-ant-api03-livecheckXlivecheckXlivecheckXlivecheckXlivecheckX"
