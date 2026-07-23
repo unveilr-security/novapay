@@ -5,6 +5,7 @@ CrewAI; calls Claude for reasoning and a set of MCP tools for data access.
 
 ⚠️ Seeded with vulnerabilities for the Unveilr demo — do not deploy.
 """
+import ast
 import hashlib
 import os
 
@@ -31,8 +32,11 @@ def _fingerprint(card_number: str) -> str:
 
 
 def score_rule(expression: str, context: dict) -> float:
-    # INSECURE: eval on a rule expression — code injection.
-    return float(eval(expression, {"__builtins__": {}}, context))
+    # Use ast.literal_eval for safe evaluation of literal expressions
+    try:
+        return float(ast.literal_eval(expression))
+    except (ValueError, SyntaxError):
+        raise ValueError(f"Invalid rule expression: {expression}")
 
 
 def build_agent() -> Agent:
