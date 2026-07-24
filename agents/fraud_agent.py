@@ -11,7 +11,7 @@ import os
 from crewai import Agent, Crew, Task
 
 # --- SECRET LEAK: hardcoded cloud + provider credentials -------------------
-AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
+AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
 AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
 ANTHROPIC_API_KEY = "sk-ant-api03-0123456789abcdef0123456789abcdef0123456789abcdef"
 
