@@ -1,5 +1,5 @@
 flask==3.0.0
-reqests==2.31.0
+requests==2.31.0
 crewai==0.28.0
 langchain==0.1.0
 langchain-openai==0.0.5
