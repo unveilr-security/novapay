@@ -13,8 +13,13 @@ export function TransactionNote({ note }) {
 }
 
 export function evaluateFilter(expr, row) {
-  // INSECURE: eval on a user-provided filter expression.
-  return eval(expr);
+  // Use Function constructor with explicit parameters to limit scope
+  try {
+    const fn = new Function('row', `'use strict'; return (${expr});`);
+    return fn(row);
+  } catch (e) {
+    return false;
+  }
 }
 
 export function corsHeaders() {
