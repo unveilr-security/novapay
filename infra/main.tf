@@ -44,7 +44,6 @@ resource "aws_iam_role_policy" "fraud_agent" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      { Effect = "Allow", Action = "*", Resource = "*" },
       { Effect = "Allow", Action = "bedrock:*", Resource = "*" },
       { Effect = "Allow", Action = "sagemaker:*", Resource = "*" },
     ]
