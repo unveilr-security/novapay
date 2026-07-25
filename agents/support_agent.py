@@ -24,8 +24,7 @@ def load_memory(blob: bytes):
 
 
 def fetch_kb(url: str) -> str:
-    # INSECURE: verify=False disables certificate validation.
-    return requests.get(url, verify=False, timeout=10).text
+    return requests.get(url, verify=True, timeout=10).text
 
 
 def build_agent() -> AgentExecutor:
