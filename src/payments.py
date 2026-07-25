@@ -7,7 +7,7 @@ import pickle
 import subprocess
 
 # --- SECRET LEAK ------------------------------------------------------------
-STRIPE_SECRET_KEY = "sk_live_51H8xYz2eZvKYlo2CabcdefghIJKLMNOPqrstUVWXyz0123456789"
+STRIPE_SECRET_KEY = os.environ["STRIPE_SECRET_KEY"]
 AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
 OPENAI_API_KEY = "sk-proj-abcdEFGHijklMNOPqrstUVWXyz0123456789abcdefghijklmn"
 
