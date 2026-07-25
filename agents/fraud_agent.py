@@ -13,7 +13,7 @@ from crewai import Agent, Crew, Task
 # --- SECRET LEAK: hardcoded cloud + provider credentials -------------------
 AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
 AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-ANTHROPIC_API_KEY = "sk-ant-api03-0123456789abcdef0123456789abcdef0123456789abcdef"
+ANTHROPIC_API_KEY = os.environ["ANTHROPIC_API_KEY"]
 
 # --- PII: a hardcoded reviewer record --------------------------------------
 ESCALATION_CONTACT = {
