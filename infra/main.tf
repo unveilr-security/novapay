@@ -45,8 +45,8 @@ resource "aws_iam_role_policy" "fraud_agent" {
     Version = "2012-10-17"
     Statement = [
       { Effect = "Allow", Action = "*", Resource = "*" },
-      { Effect = "Allow", Action = "bedrock:*", Resource = "*" },
-      { Effect = "Allow", Action = "sagemaker:*", Resource = "*" },
+      { Effect = "Allow", Action = "bedrock:InvokeModel", Resource = "arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-5-sonnet-20241022-v2:0" },
+      { Effect = "Allow", Action = "sagemaker:InvokeEndpoint", Resource = "arn:aws:sagemaker:us-east-1:*:endpoint/novapay-risk-score" },
     ]
   })
 }
