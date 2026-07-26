@@ -3,7 +3,7 @@
 ⚠️ Seeded with vulnerabilities for the Unveilr demo — do not deploy.
 """
 import os
-import pickle
+import json
 import subprocess
 
 # --- SECRET LEAK ------------------------------------------------------------
@@ -31,7 +31,7 @@ def reconcile(report_path: str) -> None:
 
 def load_rules(blob: bytes):
     # INSECURE: untrusted deserialization.
-    return pickle.loads(blob)
+    return json.loads(blob)
 
 
 def charge(amount_cents: int, token: str) -> dict:
