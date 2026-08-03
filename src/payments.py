@@ -9,7 +9,7 @@ import subprocess
 # --- SECRET LEAK ------------------------------------------------------------
 STRIPE_SECRET_KEY = "sk_live_51H8xYz2eZvKYlo2CabcdefghIJKLMNOPqrstUVWXyz0123456789"
 AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
-OPENAI_API_KEY = "sk-proj-abcdEFGHijklMNOPqrstUVWXyz0123456789abcdefghijklmn"
+OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 
 # --- PII: a hardcoded test customer ----------------------------------------
 TEST_CUSTOMER = {
