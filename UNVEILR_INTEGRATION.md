@@ -94,6 +94,13 @@ Triage from the console or `POST /v1/findings/{id}/status`.
 
 ## 3. Govern — control what agents actually do
 
+> **Deep dive — one path, monitor→enforce, on real AWS:**
+> [`SCENARIO_BROKER_AWS.md`](SCENARIO_BROKER_AWS.md) walks the credential-mediation
+> control end to end — deny the fraud agent's standing key, broker an STS-scoped
+> credential for a single S3 read, and CloudTrail-correlate it to
+> `bounded_authority_proven`. Provision with `infra/broker-demo/provision.sh`,
+> drive with `demo/broker_enforce.py`.
+
 ### The agent deployment gate
 Discovered agents start **unregistered**. An unregistered agent cannot mint a
 gateway credential, so its tool calls fail closed. To ship one:
