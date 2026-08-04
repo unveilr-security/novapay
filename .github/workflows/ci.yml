@@ -1,7 +1,70 @@
 name: novapay-ci
-on: [push]
+
+# The AI-SDLC gate runs BEFORE anything installs.
+#
+# This pipeline used to start with `pip install -r requirements.txt`, which died
+# on `reqests==2.31.0` — a typosquat of `requests` that does not exist on PyPI.
+# That failure was real but useless: pip reports "No matching distribution
+# found", which reads as a broken lockfile rather than a supply-chain attack, and
+# it says nothing about `novapay-ai-riskkit`, the hallucinated package two lines
+# below it.
+#
+# Now the gate is the first thing that runs, so the build stops with a REASON —
+# the dependency was flagged — instead of stopping because a resolver choked.
+#
+# ⚠️ NovaPay is seeded with vulnerabilities for the Unveilr demo. This pipeline
+#    is EXPECTED to fail. That is the point: it fails at the gate, naming what is
+#    wrong and where.
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+  security-events: write   # SARIF -> GitHub code scanning
+
 jobs:
+  govern:
+    name: AI-SDLC gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Unveilr CLI
+        run: curl -fsSL https://get.unveilr.ai/install.sh | sh
+
+      # Annotations land the findings inline on the offending lines, so a
+      # reviewer sees "typosquat of 'requests'" on requirements.txt itself
+      # rather than having to open the job log.
+      - name: Scan (enforce)
+        run: unveilr scan . --mode enforce --fail-on high --annotations
+
+      # `always()` so the evidence survives the failure above — a gate whose
+      # output only exists when it passes is not much use when it fails.
+      - name: Job summary
+        if: always()
+        run: unveilr scan . --pr-comment >> "$GITHUB_STEP_SUMMARY"
+
+      - name: SARIF for code scanning
+        if: always()
+        run: unveilr scan . --sarif unveilr.sarif
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: unveilr.sarif
+          category: unveilr
+
+      - name: AI Discovery Readout
+        if: always()
+        run: unveilr scan . --readout unveilr-readout.html
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unveilr-readout
+          path: unveilr-readout.html
+
   test:
+    name: tests
+    needs: govern          # never install dependencies the gate rejected
     runs-on: ubuntu-latest
     env:
       # ⚠️ AI keys in CI env — Unveilr's ai_surface scanner flags these.
