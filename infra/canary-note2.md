@@ -1,0 +1,1 @@
+# opensearch connectivity check
