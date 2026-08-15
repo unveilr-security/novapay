@@ -29,13 +29,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # `curl -fsSL … | sh` hides its own failure: when curl fails, sh receives
+      # empty input and exits 0, so this step goes green and the run dies two
+      # steps later on `unveilr: command not found`. pipefail fails it here.
+      #
+      # Non-blocking on purpose: the Unveilr GitHub App posts
+      # `Unveilr / Agent Action Authorization` via webhook, and that is the
+      # check the ruleset requires. This CLI path is a second, weaker one, so it
+      # must not fail the build while the release channel is unhosted.
       - name: Install Unveilr CLI
-        run: curl -fsSL https://get.unveilr.ai/install.sh | sh
+        id: install_cli
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          curl -fsSL https://get.unveilr.ai/install.sh | sh
 
       # Annotations land the findings inline on the offending lines, so a
       # reviewer sees "typosquat of 'requests'" on requirements.txt itself
       # rather than having to open the job log.
       - name: Scan (enforce)
+        if: steps.install_cli.outcome == 'success'
         run: unveilr scan . --mode enforce --fail-on high --annotations
 
       # `always()` so the evidence survives the failure above — a gate whose
