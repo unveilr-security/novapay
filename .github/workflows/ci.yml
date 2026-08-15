@@ -54,11 +54,17 @@ jobs:
       # `always()` so the evidence survives the failure above — a gate whose
       # output only exists when it passes is not much use when it fails.
       - name: Job summary
-        if: always()
+        # always() so the evidence survives a failing scan — but the CLI
+        # still has to exist, or this reports `command not found` rather
+        # than the finding it was meant to capture.
+        if: always() && steps.install_cli.outcome == 'success'
         run: unveilr scan . --pr-comment >> "$GITHUB_STEP_SUMMARY"
 
       - name: SARIF for code scanning
-        if: always()
+        # always() so the evidence survives a failing scan — but the CLI
+        # still has to exist, or this reports `command not found` rather
+        # than the finding it was meant to capture.
+        if: always() && steps.install_cli.outcome == 'success'
         run: unveilr scan . --sarif unveilr.sarif
       # Non-fatal: code scanning needs GitHub Advanced Security, which private
       # repos do not have by default ("Resource not accessible by integration").
@@ -72,7 +78,10 @@ jobs:
           category: unveilr
 
       - name: AI Discovery Readout
-        if: always()
+        # always() so the evidence survives a failing scan — but the CLI
+        # still has to exist, or this reports `command not found` rather
+        # than the finding it was meant to capture.
+        if: always() && steps.install_cli.outcome == 'success'
         run: unveilr scan . --readout unveilr-readout.html
       - uses: actions/upload-artifact@v4
         if: always()
