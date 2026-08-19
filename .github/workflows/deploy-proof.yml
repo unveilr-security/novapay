@@ -1,0 +1,12 @@
+name: deploy-proof
+# Exercises the deployment-authorization leg end to end: this job targets a
+# protected environment, so GitHub holds it and asks Unveilr whether it may
+# proceed. Until now that handler had never received a real payload.
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: echo "released"
