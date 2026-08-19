@@ -3,7 +3,11 @@ name: deploy-proof
 # protected environment, so GitHub holds it and asks Unveilr whether it may
 # proceed. Until now that handler had never received a real payload.
 on:
-  workflow_dispatch:
+  # push, not workflow_dispatch: dispatch only registers a workflow that exists
+  # on the DEFAULT branch, which is the same rule that kept the canary from ever
+  # firing. A push trigger works from the branch it lives on.
+  push:
+    branches: [canary/deploy-proof]
 jobs:
   deploy:
     runs-on: ubuntu-latest
